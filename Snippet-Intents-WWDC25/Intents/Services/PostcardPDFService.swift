@@ -22,43 +22,43 @@ class PostcardPDFService: @unchecked Sendable {
     private init() {}
     
     
-    /// Export a postcard from PostcardDocumentNew to PDF format
+    /// Export a postcard to PDF format
     func exportPostcard(_ postcard: PostcardDocument) async -> URL? {
-        let pdfURL = createPDFURLNew(for: postcard)
+        let pdfURL = createPDFURL(for: postcard)
         
         // Create PDF document
         let pdfDocument = PDFDocument()
         
         // Add front page
-        if let frontPage = await createFrontPageNew(postcard: postcard) {
+        if let frontPage = await createFrontPage(postcard: postcard) {
             pdfDocument.insert(frontPage, at: 0)
         }
         
         // Add back page
-        if let backPage = await createBackPageNew(postcard: postcard) {
+        if let backPage = await createBackPage(postcard: postcard) {
             pdfDocument.insert(backPage, at: pdfDocument.pageCount)
         }
         
         // Save PDF
         if pdfDocument.write(to: pdfURL) {
-            logger.info("Exported new postcard PDF to: \(pdfURL.path)")
+            logger.info("Exported postcard PDF to: \(pdfURL.path)")
             return pdfURL
         } else {
-            logger.error("Failed to export new postcard PDF")
+            logger.error("Failed to export postcard PDF")
             return nil
         }
     }
     
     
-    /// Create the front page of the new postcard
-    private func createFrontPageNew(postcard: PostcardDocument) async -> PDFPage? {
-        let frontView = PostcardFrontPDFViewNew(postcard: postcard)
+    /// Create the front page of the postcard
+    private func createFrontPage(postcard: PostcardDocument) async -> PDFPage? {
+        let frontView = PostcardFrontPDFView(postcard: postcard)
         return createPDFPage(from: frontView)
     }
     
-    /// Create the back page of the new postcard
-    private func createBackPageNew(postcard: PostcardDocument) async -> PDFPage? {
-        let backView = PostcardBackPDFViewNew(postcard: postcard)
+    /// Create the back page of the postcard
+    private func createBackPage(postcard: PostcardDocument) async -> PDFPage? {
+        let backView = PostcardBackPDFView(postcard: postcard)
         return createPDFPage(from: backView)
     }
     
@@ -98,8 +98,8 @@ class PostcardPDFService: @unchecked Sendable {
     }
 
     
-    /// Create a unique PDF URL for the new postcard
-    private func createPDFURLNew(for postcard: PostcardDocument) -> URL {
+    /// Create a unique PDF URL for the postcard
+    private func createPDFURL(for postcard: PostcardDocument) -> URL {
         let documentsURL = PostcardDataStore.documentsDirectory
         let fileName = "\(postcard.title.replacingOccurrences(of: " ", with: "_"))_\(postcard.id).pdf"
         return documentsURL.appendingPathComponent(fileName)
@@ -107,10 +107,10 @@ class PostcardPDFService: @unchecked Sendable {
 }
 
 
-// MARK: - PDF Views for New Postcards
+// MARK: - PDF Views for Postcards
 
-/// Front view optimized for PDF rendering (New)
-struct PostcardFrontPDFViewNew: View {
+/// Front view optimized for PDF rendering
+struct PostcardFrontPDFView: View {
     let postcard: PostcardDocument
     
     var body: some View {
@@ -123,18 +123,11 @@ struct PostcardFrontPDFViewNew: View {
             HStack(spacing: 0) {
                 // Left side - Image (fills half the space, no padding)
                 ZStack {
-                    if let frontImageData = postcard.frontImageData,
-                       let uiImage = UIImage(data: frontImageData) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 216, height: 288)
-                            .clipped()
-                    } else {
-                        Rectangle()
-                            .fill(Color.gray.opacity(0.1))
-                            .frame(width: 216, height: 288)
-                    }
+                    PostcardImageView(
+                        imageData: postcard.frontImageData,
+                        size: CGSize(width: 216, height: 288),
+                        cornerRadius: 0
+                    )
                 }
                 .frame(width: 216, height: 288)
                 
@@ -169,25 +162,18 @@ struct PostcardFrontPDFViewNew: View {
     }
 }
 
-/// Back view optimized for PDF rendering (New)
-struct PostcardBackPDFViewNew: View {
+/// Back view optimized for PDF rendering
+struct PostcardBackPDFView: View {
     let postcard: PostcardDocument
     
     var body: some View {
         ZStack {
             // Full Background Image - no address area
-            if let backImageData = postcard.backImageData,
-                          let uiImage = UIImage(data: backImageData) {
-            Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 432, height: 288)
-                    .clipped()
-            } else {
-                Rectangle()
-                    .fill(Color.white)
-                    .frame(width: 432, height: 288)
-            }
+            PostcardImageView(
+                imageData: postcard.backImageData,
+                size: CGSize(width: 432, height: 288),
+                cornerRadius: 0
+            )
         }
         .frame(width: 432, height: 288)
     }

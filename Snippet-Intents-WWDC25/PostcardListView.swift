@@ -177,18 +177,13 @@ struct PostcardRowView: View {
                     .fill(Color.gray.opacity(0.1))
                     .frame(width: 60, height: 40)
                 
-                if let frontImageData = postcard.frontImageData,
-                                  let uiImage = UIImage(data: frontImageData) {
-                Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 60, height: 40)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                } else {
-                    Image(systemName: "rectangle.and.pencil.and.ellipsis")
-                        .font(.title3)
-                        .foregroundStyle(.gray)
-                }
+                PostcardImageView(
+                    imageData: postcard.frontImageData,
+                    size: CGSize(width: 60, height: 40),
+                    cornerRadius: 8,
+                    placeholderIcon: "rectangle.and.pencil.and.ellipsis",
+                    placeholderText: ""
+                )
             }
             
             // Content

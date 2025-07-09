@@ -28,6 +28,8 @@ struct ImageSelectionHeader: View {
     }
 }
 
+
+
 struct ImageProgressIndicator: View {
     let progressValue: Double
     let color: Color
@@ -140,5 +142,66 @@ struct ActionButtonLabel: View {
         .background(style.backgroundColor())
         .foregroundStyle(style.foregroundColor())
         .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+}
+
+// MARK: - Reusable Image Display Component
+
+struct PostcardImageView: View {
+    let imageData: Data?
+    let contentMode: ContentMode
+    let placeholderIcon: String
+    let placeholderText: String
+    
+    private let size: CGSize?
+    private let cornerRadius: CGFloat
+    private let showBorder: Bool
+    
+    init(
+        imageData: Data?,
+        contentMode: ContentMode = .fill,
+        size: CGSize? = nil,
+        cornerRadius: CGFloat = 8,
+        showBorder: Bool = false,
+        placeholderIcon: String = "photo.badge.plus",
+        placeholderText: String = "No image"
+    ) {
+        self.imageData = imageData
+        self.contentMode = contentMode
+        self.size = size
+        self.cornerRadius = cornerRadius
+        self.showBorder = showBorder
+        self.placeholderIcon = placeholderIcon
+        self.placeholderText = placeholderText
+    }
+    
+    var body: some View {
+        Group {
+            if let imageData = imageData,
+               let uiImage = UIImage(data: imageData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(contentMode: contentMode)
+            } else {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.1))
+                    .overlay {
+                        VStack(spacing: 8) {
+                            Image(systemName: placeholderIcon)
+                                .font(.title2)
+                                .foregroundStyle(.gray)
+                            Text(placeholderText)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+            }
+        }
+        .frame(width: size?.width, height: size?.height)
+        .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+        .overlay(
+            showBorder ? RoundedRectangle(cornerRadius: cornerRadius)
+                .stroke(.gray.opacity(0.3), lineWidth: 1) : nil
+        )
     }
 } 

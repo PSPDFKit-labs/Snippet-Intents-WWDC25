@@ -65,28 +65,13 @@ struct PostcardFrontPreview: View {
                 
                 HStack(spacing: 0) {
                     // Left side - Front Image
-                    if let frontImageData = document.frontImageData,
-                       let uiImage = UIImage(data: frontImageData) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: geometry.size.width * 0.5, height: geometry.size.height)
-                            .clipped()
-                    } else {
-                        Rectangle()
-                            .fill(Color.gray.opacity(0.1))
-                            .frame(width: geometry.size.width * 0.5)
-                            .overlay(
-                                VStack(spacing: 4) {
-                                    Image(systemName: "photo")
-                                        .font(.title3)
-                                        .foregroundStyle(.gray)
-                                    Text("No Image")
-                                        .font(.caption2)
-                                        .foregroundStyle(.gray)
-                                }
-                            )
-                    }
+                    PostcardImageView(
+                        imageData: document.frontImageData,
+                        size: CGSize(width: geometry.size.width * 0.5, height: geometry.size.height),
+                        cornerRadius: 0,
+                        placeholderIcon: "photo",
+                        placeholderText: "No Image"
+                    )
                     
                     // Right side - Greeting Text
                     VStack(alignment: .leading, spacing: 8) {
@@ -131,27 +116,13 @@ struct PostcardBackPreview: View {
         GeometryReader { geometry in
             ZStack {
                 // Full Background Image
-                if let backImageData = document.backImageData,
-                   let uiImage = UIImage(data: backImageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .clipped()
-                } else {
-                    Rectangle()
-                        .fill(Color.white)
-                        .overlay(
-                            VStack(spacing: 4) {
-                                Image(systemName: "photo")
-                                    .font(.title3)
-                                    .foregroundStyle(.gray)
-                                Text("No Background")
-                                    .font(.caption2)
-                                    .foregroundStyle(.gray)
-                            }
-                        )
-                }
+                PostcardImageView(
+                    imageData: document.backImageData,
+                    size: CGSize(width: geometry.size.width, height: geometry.size.height),
+                    cornerRadius: 0,
+                    placeholderIcon: "photo",
+                    placeholderText: "No Background"
+                )
             }
         }
     }

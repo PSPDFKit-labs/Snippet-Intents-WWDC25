@@ -185,27 +185,12 @@ struct PostcardFrontView: View {
                 
                 HStack(spacing: .zero) {
                     ZStack {
-                        if let frontImageData = postcard.frontImageData,
-                           let uiImage = UIImage(data: frontImageData) {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .frame(width:geometry.size.width / 2, height: geometry.size.height)
-                                .aspectRatio(contentMode: .fill)
-                                .clipped()
-                        } else {
-                            Rectangle()
-                                .fill(Color.gray.opacity(0.1))
-                                .overlay(
-                                    VStack(spacing: 8) {
-                                        Image(systemName: "photo.badge.plus")
-                                            .font(.title2)
-                                            .foregroundStyle(.gray)
-                                        Text("Add Image")
-                                            .font(.caption)
-                                            .foregroundStyle(.gray)
-                                    }
-                                )
-                        }
+                        PostcardImageView(
+                            imageData: postcard.frontImageData,
+                            size: CGSize(width: geometry.size.width / 2, height: geometry.size.height),
+                            cornerRadius: 0,
+                            placeholderText: "Add Image"
+                        )
                         
                         if isEditing {
                             PhotosPicker(selection: $frontImageItem, matching: .images) {
@@ -285,27 +270,12 @@ struct PostcardBackView: View {
         GeometryReader { geometry in
             ZStack {
                 // Full Background Image - no address area
-                if let backImageData = postcard.backImageData,
-                   let uiImage = UIImage(data: backImageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .clipped()
-                } else {
-                    Rectangle()
-                        .fill(.white)
-                        .overlay(
-                            VStack(spacing: 8) {
-                                Image(systemName: "photo.badge.plus")
-                                    .font(.title2)
-                                    .foregroundStyle(.gray)
-                                Text("Add Background")
-                                    .font(.caption)
-                                    .foregroundStyle(.gray)
-                            }
-                        )
-                }
+                PostcardImageView(
+                    imageData: postcard.backImageData,
+                    size: CGSize(width: geometry.size.width, height: geometry.size.height),
+                    cornerRadius: 0,
+                    placeholderText: "Add Background"
+                )
                 
                 if isEditing {
                     PhotosPicker(selection: $backImageItem, matching: .images) {
