@@ -21,7 +21,7 @@ struct AddFrontImageSnippetIntent: SnippetIntent {
         }
         
         return .result(
-            view: FrontImageSelectionView(postcard: currentPostcard.toEntity)
+            view: FrontImageSelectionView(postcard: currentPostcard)
         )
     }
 }
