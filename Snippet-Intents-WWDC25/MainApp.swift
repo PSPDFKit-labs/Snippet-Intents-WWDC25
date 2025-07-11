@@ -9,7 +9,7 @@ import SwiftUI
 import AppIntents
 
 @main
-struct Snippet_Intents_WWDC25App: App {
+struct MainApp: App {
     @State private var dataStore = PostcardDataStore()
     private var imageService: PostcardImageService!
 
