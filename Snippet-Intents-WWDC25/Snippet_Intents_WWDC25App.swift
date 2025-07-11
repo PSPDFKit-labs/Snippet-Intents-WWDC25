@@ -45,7 +45,4 @@ struct Shortcuts: AppShortcutsProvider {
 
 
     }
-
-    /// Shortcuts to show when the user taps "Add to Siri"
-    static var shortcutTileColor: ShortcutTileColor = .purple
 }
