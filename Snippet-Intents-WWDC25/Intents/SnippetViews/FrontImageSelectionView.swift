@@ -28,7 +28,7 @@ struct FrontImageSelectionView: View {
             )
             
             HStack(spacing: 12) {
-                Button(intent: SelectRandomFrontImageIntent(postcard: postcard)) {
+                Button(intent: SelectRandomImageIntent(postcard: postcard, surface: .front)) {
                     ActionButtonLabel(title: "Generate", style: .primary(.green))
                 }
                 .buttonStyle(.plain)

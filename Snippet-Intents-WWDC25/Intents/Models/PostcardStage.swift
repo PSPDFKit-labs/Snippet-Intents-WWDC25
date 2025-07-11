@@ -70,10 +70,6 @@ enum PostcardStage: String, CaseIterable, Codable, AppEnum {
         }
     }
     
-    var isComplete: Bool {
-        return self == .complete
-    }
-    
     var progressValue: Double {
         switch self {
         case .backgroundImage: return 0.2

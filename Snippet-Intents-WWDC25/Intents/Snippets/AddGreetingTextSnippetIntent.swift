@@ -21,7 +21,7 @@ struct AddGreetingTextSnippetIntent: SnippetIntent {
         }
         
         return .result(
-            view: GreetingTextInputView(postcard: currentPostcard.toEntity)
+            view: GreetingTextView(postcard: currentPostcard.toEntity)
         )
     }
 }

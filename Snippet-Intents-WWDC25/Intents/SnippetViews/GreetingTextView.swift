@@ -8,7 +8,7 @@
 import SwiftUI
 import AppIntents
 
-struct GreetingTextInputView: View {
+struct GreetingTextView: View {
     let postcard: PostcardEntity
     
     var body: some View {

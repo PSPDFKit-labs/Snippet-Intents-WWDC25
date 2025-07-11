@@ -8,7 +8,7 @@
 import SwiftUI
 import AppIntents
 
-struct SenderInfoInputView: View {
+struct SenderInfoView: View {
     let postcard: PostcardEntity
     
     var body: some View {

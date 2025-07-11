@@ -24,9 +24,7 @@ struct PostcardView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 32) {
-                // Postcard Container
                 VStack(spacing: 24) {
-                    // Postcard View with proper container
                     VStack(spacing: 0) {
                         if isShowingBack {
                             PostcardBackView(postcard: $postcard, isEditing: $isEditing, backImageItem: $backImageItem)
@@ -43,8 +41,7 @@ struct PostcardView: View {
                         axis: (x: 0, y: 1, z: 0)
                     )
                     .animation(.easeInOut(duration: 0.6), value: isShowingBack)
-                    
-                    // Side Indicator
+
                     HStack(spacing: 8) {
                         Circle()
                             .fill(isShowingBack ? Color.secondary : Color.accentColor)
@@ -56,8 +53,7 @@ struct PostcardView: View {
                     .animation(.easeInOut(duration: 0.3), value: isShowingBack)
                 }
                 .padding(.top, 20)
-                
-                // Controls Section
+
                 VStack(spacing: 24) {
                     // Flip Button
                     Button(action: {
@@ -71,13 +67,11 @@ struct PostcardView: View {
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
-                        //.background(Color(.systemGray6))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
                     .buttonStyle(.plain)
                     
-                    
-                    // Action Buttons
+
                     VStack(spacing: 12) {
                         Button(action: {
                             isEditing.toggle()
@@ -158,7 +152,6 @@ struct PostcardView: View {
             return
         }
 
-        // Share the PDF
         let activityViewController = UIActivityViewController(activityItems: [pdfURL], applicationActivities: nil)
         
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
@@ -269,7 +262,6 @@ struct PostcardBackView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                // Full Background Image - no address area
                 PostcardImageView(
                     imageData: postcard.backImageData,
                     size: CGSize(width: geometry.size.width, height: geometry.size.height),

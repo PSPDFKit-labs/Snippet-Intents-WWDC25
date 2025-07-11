@@ -28,7 +28,7 @@ struct AddSenderInfoSnippetIntent: AppIntent & SnippetIntent {
         
         return .result(
             dialog: IntentDialog("Add your name to the postcard"),
-            view: SenderInfoInputView(postcard: currentPostcard.toEntity)
+            view: SenderInfoView(postcard: currentPostcard.toEntity)
         )
     }
 }
